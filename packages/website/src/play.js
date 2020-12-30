@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import * as Element3 from 'element3'
-import App from './play/index.vue'
+import App from './play/issue531.vue'
 import 'element3/lib/theme-chalk/index.css'
 
 const app = createApp(App)

@@ -7,15 +7,25 @@ const load = (path) =>
 const loadDocs = (path) =>
   defineAsyncComponent(() => import(`../docs${path}.md`))
 
+const loadIssue = (no) =>
+  defineAsyncComponent(() => import(`../fixbugs/issue${no}.vue`))
+
 const registerRoute = (navConfig) => {
   const route = []
 
-  route.push({
-    path: `/component`,
-    redirect: `/component/installation`,
-    component: load('component'),
-    children: []
-  })
+  route.push(
+    {
+      path: `/component`,
+      redirect: `/component/installation`,
+      component: load('component'),
+      children: []
+    },
+    {
+      path: `/issue531`,
+      component: loadIssue('531'),
+      children: []
+    }
+  )
 
   navConfig.forEach((nav) => {
     if (nav.href) return

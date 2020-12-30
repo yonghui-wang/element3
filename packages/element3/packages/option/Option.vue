@@ -127,6 +127,7 @@ export default {
     }
 
     function hoverItem() {
+      console.debug('Option.vue hoverItem()')
       if (!disabled.value && !data.groupDisabled) {
         select.hoverIndex = select.options.indexOf(proxy)
       }

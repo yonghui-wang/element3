@@ -144,7 +144,7 @@
           :class="{
             'is-empty': !allowCreate && query && filteredOptionsCount === 0
           }"
-          v-show="options.length > 0 && !loading"
+          v-show="options && options.length > 0 && !loading"
         >
           <el-option :value="query" created v-if="showNewOption"> </el-option>
           <slot></slot>
@@ -162,6 +162,7 @@
         </template>
       </el-select-menu>
     </transition>
+    <div>{{ options }}</div>
   </div>
 </template>
 
@@ -266,6 +267,7 @@ export default {
     },
 
     showNewOption() {
+      console.debug('showNewOption this.options:', this.options)
       const hasExistingOption = this.options
         .filter((option) => !option.created)
         .some((option) => option.currentLabel === this.query)
@@ -372,6 +374,7 @@ export default {
 
   setup() {
     const { dispatch, broadcast, on } = useEmitter()
+    console.debug('debug')
     return { dispatch, broadcast, on }
   },
 
@@ -439,6 +442,7 @@ export default {
     },
 
     visible(val) {
+      console.debug('Select watch visible:', this.allowCreate)
       if (!val) {
         this.broadcast('destroyPopper')
         if (this.$refs.input) {
@@ -502,6 +506,7 @@ export default {
     },
 
     options() {
+      console.debug('Select options():', this.options)
       if (this.$isServer) return
       this.$nextTick(() => {
         this.broadcast('updatePopper')
@@ -580,6 +585,7 @@ export default {
     },
 
     scrollToOption(option) {
+      console.debug('scrollToOption: ', option)
       const target =
         Array.isArray(option) && option[0] ? option[0].$el : option.$el
       if (this.$refs.popper && target) {
@@ -745,10 +751,12 @@ export default {
       this.$nextTick(() => {
         if (!this.$refs.reference) return
         const inputChildNodes = this.$refs.reference.$el.childNodes
+        console.debug('resetInputHeight')
         const input = [].filter.call(
           inputChildNodes,
           (item) => item.tagName === 'INPUT'
         )[0]
+        console.debug('resetInputHeight')
         const tags = this.$refs.tags
         const sizeInMap = this.initialInputHeight || 40
         if (input) {
@@ -904,6 +912,7 @@ export default {
     },
 
     onOptionDestroy(index) {
+      console.debug('Select onOptionDestroy', this.optionsCount)
       if (index > -1) {
         this.optionsCount--
         this.filteredOptionsCount--
@@ -963,6 +972,8 @@ export default {
   },
 
   created() {
+    console.debug('created()')
+    console.debug('created() this.modelValue:', this.modelValue, ';')
     this.cachedPlaceHolder = this.currentPlaceholder = this.placeholder
     if (this.multiple && !Array.isArray(this.modelValue)) {
       // this.$emit('input', [])
@@ -985,6 +996,8 @@ export default {
     this.on('setSelected', this.setSelected)
   },
   mounted() {
+    console.debug('mounted()')
+    console.debug('mounted() this.modelValue:', this.options, ';')
     if (
       this.multiple &&
       Array.isArray(this.modelValue) &&
@@ -1017,6 +1030,7 @@ export default {
   },
 
   beforeUnmount() {
+    console.debug('beforeUnmount()')
     if (this.$el && this.handleResize)
       removeResizeListener(this.$el, this.handleResize)
   }

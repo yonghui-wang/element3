@@ -79,6 +79,7 @@ const esBundleConfig = {
   ],
   output: {
     file: createFileName('esm-bundler'),
+    sourcemap: true,
     format: 'es'
   }
 }
@@ -179,7 +180,9 @@ const devFormatConfigs = [esBundleConfig]
 
 function createPackageConfigs() {
   return getFormatConfigs().map((formatConfig) => {
-    return mergeConfig(createBaseConfig(), formatConfig)
+    const resultConfig = mergeConfig(createBaseConfig(), formatConfig)
+    console.debug(resultConfig)
+    return resultConfig
   })
 }
 
