@@ -47,6 +47,7 @@ import {
   onMounted,
   ref,
   onUpdated,
+  watch,
   watchEffect
 } from 'vue'
 
@@ -126,7 +127,13 @@ export default {
     const state = reactive({
       tree
     })
-
+    
+    watch(() => props.data, () => {
+      state.tree.update(props.data)
+      if (props.defaultExpandAll) {
+        state.tree.expandAll();
+      }
+    })
     provide('elTree', instance)
 
     useTab()
